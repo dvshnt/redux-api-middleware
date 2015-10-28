@@ -9,7 +9,7 @@ import { normalize } from 'normalizr';
  * @param {object} res - A raw response object
  * @returns {promise|undefined}
  */
-async function getJSON(res) {
+async function getJSON(res, schema) {
   const contentType = res.headers.get('Content-Type');
 
   if (contentType && ~contentType.indexOf('json') && !schema) {
