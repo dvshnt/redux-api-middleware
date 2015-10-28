@@ -41,7 +41,7 @@ function apiMiddleware({ getState }) {
     const callAPI = action[CALL_API];
     var { endpoint, headers } = callAPI;
     const { method, body, credentials, bailout, types, schema } = callAPI;
-    const [requestType, successType, failureType] = normalizeTypeDescriptors(types);
+    const [requestType, successType, failureType] = normalizeTypeDescriptors(types, schema);
 
     // Should we bail out?
     try {
