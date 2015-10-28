@@ -40,7 +40,7 @@ function apiMiddleware({ getState }) {
     // Parse the validated RSAA action
     const callAPI = action[CALL_API];
     var { endpoint, headers } = callAPI;
-    const { method, body, credentials, bailout, types } = callAPI;
+    const { method, body, credentials, bailout, types, schema } = callAPI;
     const [requestType, successType, failureType] = normalizeTypeDescriptors(types);
 
     // Should we bail out?

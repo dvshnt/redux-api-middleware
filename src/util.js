@@ -1,4 +1,5 @@
 import { InternalError, ApiError } from './errors';
+import { normalize } from 'normalizr';
 
 /**
  * Extract JSON body from a server response
@@ -11,8 +12,10 @@ import { InternalError, ApiError } from './errors';
 async function getJSON(res) {
   const contentType = res.headers.get('Content-Type');
 
-  if (contentType && ~contentType.indexOf('json')) {
+  if (contentType && ~contentType.indexOf('json') && !schema) {
     return await res.json();
+  } else if (contentType && ~contentType.indexOf('json') && schema) {
+    return await normalize(res.json(), schema);
   } else {
     return await Promise.resolve();
   }
@@ -27,7 +30,7 @@ async function getJSON(res) {
  * @param {array} types - The [CALL_API].types from a validated RSAA
  * @returns {array}
  */
-function normalizeTypeDescriptors(types) {
+function normalizeTypeDescriptors(types, schema) {
   let [requestType, successType, failureType] = types;
 
   if (typeof requestType === 'string' || typeof requestType === 'symbol') {
@@ -38,7 +41,7 @@ function normalizeTypeDescriptors(types) {
     successType = { type: successType };
   }
   successType = {
-    payload: (action, state, res) => getJSON(res),
+    payload: (action, state, res) => getJSON(res, schema),
     ...successType
   };
 
