@@ -42,7 +42,7 @@ function normalizeTypeDescriptors(types, schema) {
   }
   successType = {
     payload: (action, state, res) => getJSON(res, schema),
-    ...successType
+    ...successType, schema: schema
   };
 
   if (typeof failureType === 'string' || typeof failureType === 'symbol') {
