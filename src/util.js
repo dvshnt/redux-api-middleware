@@ -12,10 +12,8 @@ import { normalize } from 'normalizr';
 async function getJSON(res, schema) {
   const contentType = res.headers.get('Content-Type');
 
-  if (contentType && ~contentType.indexOf('json') && !schema) {
+  if (contentType && ~contentType.indexOf('json')) {
     return await res.json();
-  } else if (contentType && ~contentType.indexOf('json') && schema) {
-    return await normalize(res.json(), schema);
   } else {
     return await Promise.resolve();
   }
